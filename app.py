@@ -33,7 +33,7 @@ def overlay():
     output_path = f"/tmp/{work_id}_output.mp4"
 
     try:
-       r = requests.get(video_url, timeout=60, stream=True)
+        r = requests.get(video_url, timeout=60, stream=True)
         r.raise_for_status()
         with open(video_path, "wb") as f:
             for chunk in r.iter_content(chunk_size=1024 * 1024):
