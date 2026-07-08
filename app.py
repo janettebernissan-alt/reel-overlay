@@ -55,13 +55,14 @@ def overlay():
             f"drawtext=fontfile={font}:textfile={text_path}:x=10:y=h-th-30:"
             f"fontsize=32:fontcolor=white:box=1:boxcolor=black@0.6:boxborderw=10"
         )
+        scale_filter = "scale=-2:1280"
 
         if has_logo:
-            filter_complex = f"[0:v][1:v]overlay=10:10[ov];[ov]{text_filter}"
+            filter_complex = f"[0:v]{scale_filter}[v0];[v0][1:v]overlay=10:10[ov];[ov]{text_filter}"
             cmd = ["ffmpeg", "-y", "-i", video_path, "-i", logo_path,
                    "-filter_complex", filter_complex, "-codec:a", "copy", output_path]
         else:
-            cmd = ["ffmpeg", "-y", "-i", video_path, "-vf", text_filter,
+            cmd = ["ffmpeg", "-y", "-i", video_path, "-vf", f"{scale_filter},{text_filter}",
                    "-codec:a", "copy", output_path]
 
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
